@@ -30,11 +30,17 @@ mod machine_id;
 mod pid;
 
 pub use id::{Id, ParseIdError};
-
+use std::time::{Duration, UNIX_EPOCH};
 /// Generate a new globally unique id.
 #[must_use]
 pub fn new() -> Id {
     generator::get().new_id()
+}
+
+#[must_use]
+pub fn new_with_timestamp(timestamp: u64) -> Id {
+    let time = UNIX_EPOCH + Duration::from_secs(timestamp);
+    generator::get().new_id_with_time(&time)
 }
 
 #[cfg(test)]
